@@ -16,12 +16,11 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
 using InfraworkApiLib.Client;
 using InfraworkApiLib.Models;
 using InfraworkApiLib.Models.Geometries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace InfraworksApiLibTest
 {
@@ -129,7 +128,7 @@ namespace InfraworksApiLibTest
         public void GetModelItem_Terrain_Texture_Test()
         {
             InfraworksRestClient iwSvc = new InfraworksRestClient();
-            Terrain_Texture terrain_Texture = iwSvc.GetModelItem(1, "terrain_textures", "terrain_textures", 1);
+            Terrain_Texture terrain_Texture = iwSvc.GetModelItem<Terrain_Texture>(1, "terrain_textures", "terrain_textures", 1);
 
             Assert.IsNotNull(terrain_Texture, "null result, error happens.");
             Assert.AreEqual("1", terrain_Texture.id);
@@ -170,9 +169,13 @@ namespace InfraworksApiLibTest
             Markup markup = iwSvc.GetModelItem<Markup>(1, "markup", "markup", 1);
             Assert.IsNotNull(markup, "null result, error happens.");
             Assert.AreEqual("1", markup.id);
-            //Assert.IsTrue(markup.geometry.coordinates.Count > 0);
-            //Assert.AreEqual("LineString", markup.geometry.type);
-            ////Assert.AreEqual(-122.39744890341224, markup.geometry.coordinates[0][0]);
+
+            Assert.AreEqual(AiwGeometryType.LineString, markup.geometry.Type);
+            Assert.IsTrue((markup.geometry as AiwLineString).Coordinates.Length > 0);
+            Assert.AreEqual(-122.39744890341224, (markup.geometry as AiwLineString).Coordinates[0].X, 0.00000000001);
+
+            Assert.AreEqual(AiwGeometryType.Vector, markup.scale.Type);
+            Assert.AreEqual(1.4, (markup.scale as AiwVector).Coordinate.Y, 0.001);
 
         }
 
@@ -184,10 +187,11 @@ namespace InfraworksApiLibTest
             Water_Area water_area = iwSvc.GetModelItem<Water_Area>(1, "water_areas", "water_areas", 1);
             Assert.IsNotNull(water_area, "null result, error happens.");
             Assert.AreEqual("1", water_area.id);
-            //Assert.IsTrue(water_area.geometry.coordinates.Count > 0);
-            //Assert.AreEqual("Polygon", water_area.geometry.type);
-            //Assert.AreEqual(-122.59862145026804, water_area.geometry.coordinates[0][0][0]);
 
+            Assert.AreEqual(AiwGeometryType.Polygon, water_area.geometry.Type);
+            Assert.AreEqual(-122.59862145026804, (water_area.geometry as AiwPolygon).LinearRings[0].Coordinates[0].X, 0.000001);
+
+            Assert.AreEqual(AiwGeometryType.NoGeometry, water_area.model_scale.Type);
         }
 
         [TestMethod]
@@ -198,13 +202,60 @@ namespace InfraworksApiLibTest
             Coverage coverage = iwSvc.GetModelItem<Coverage>(1, "coverages", "coverages", 7);
             Assert.IsNotNull(coverage, "null result, error happens.");
             Assert.AreEqual("7", coverage.id);
-            //Assert.IsTrue(coverage.geometry.coordinates.Count > 0);
-            //Assert.AreEqual("Polygon", coverage.geometry.type);
-            //Assert.AreEqual(-122.39240418068935, coverage.geometry.coordinates[0][0][0]);
+
+            Assert.AreEqual(AiwGeometryType.Polygon, coverage.geometry.Type);
+            Assert.AreEqual(-122.39240418068935, (coverage.geometry as AiwPolygon).LinearRings[0].Coordinates[0].X, 0.000001);
+
+            Assert.AreEqual(AiwGeometryType.NoGeometry, coverage.model_scale.Type);
 
         }
 
+        [TestMethod]
+        public void GetModelItem_Pipeline_Test()
+        {
+            InfraworksRestClient iwSvc = new InfraworksRestClient();
 
+            PipeLine pipeline = iwSvc.GetModelItem<PipeLine>(1, "pipelines", "pipelines", 1);
+            Assert.IsNotNull(pipeline, "null result, error happens.");
+            Assert.AreEqual("1", pipeline.id);
+            Assert.AreEqual(AiwGeometryType.LineString, pipeline.geometry.Type);
+            Assert.IsTrue((pipeline.geometry as AiwLineString).Coordinates.Length > 0);
+            Assert.AreEqual(-122.54744280070685, (pipeline.geometry as AiwLineString).Coordinates[0].X, 0.001);
+
+            Assert.AreEqual(AiwGeometryType.NoGeometry, pipeline.model_rotate.Type);
+
+            
+        }
+
+        [TestMethod]
+        public void GetModelItem_Railway_Test()
+        {
+            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
+            Railway railway = iwSvc.GetModelItem<Railway>(1, "railways", "railways", 16);
+            Assert.IsNotNull(railway, "null result, error happens.");
+            Assert.AreEqual("16", railway.id);
+            Assert.AreEqual(AiwGeometryType.LineString, railway.geometry.Type);
+            Assert.IsTrue((railway.geometry as AiwLineString).Coordinates.Length > 0);
+            Assert.AreEqual(-122.38800243418041, (railway.geometry as AiwLineString).Coordinates[0].X, 0.001);
+
+            Assert.AreEqual(AiwGeometryType.NoGeometry, railway.model_rotate.Type);
+
+
+        }
+
+        [TestMethod]
+        public void GetModelItem_PipeConnector_Test()
+        {
+            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
+            PipeConnector pipeConnector = iwSvc.GetModelItem<PipeConnector>(1, "pipe_connectors", "pipe_connectors", 1);
+            Assert.IsNotNull(pipeConnector, "null result, error happens.");
+            Assert.AreEqual("1", pipeConnector.id);
+            Assert.AreEqual(AiwGeometryType.Point, pipeConnector.geometry.Type);
+            Assert.AreEqual(-96.68496151718864, (pipeConnector.geometry as AiwPoint).Coordinate.X, 0.000001);
+
+        }
 
     }
 }

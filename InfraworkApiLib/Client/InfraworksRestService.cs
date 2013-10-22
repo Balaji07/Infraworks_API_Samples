@@ -16,16 +16,11 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-//using Geo.Abstractions.Interfaces;
-//using Geo.Geometries;
-//using Geo.IO.GeoJson;
 using InfraworkApiLib.Models;
 using Newtonsoft.Json;
 using RestSharp;
+using System;
+using System.Collections.Generic;
 
 namespace InfraworkApiLib.Client
 {
@@ -178,12 +173,5 @@ namespace InfraworkApiLib.Client
             }
         }
 
-        public Terrain_Texture GetModelItem(int modelId, string class_type, string collection, int itemId)
-        {
-            Terrain_Texture item = GetModelItem<Terrain_Texture>(modelId, class_type, collection, itemId);
-
-            return item;
-
-        }
     }
 }
