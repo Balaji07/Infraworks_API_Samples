@@ -50,7 +50,7 @@ namespace InfraworksApiLibTest
         public void GetModelsTest()
         {
             InfraworksRestClient iwSvc = new InfraworksRestClient();
-            List<Model> models = iwSvc.GetModels();
+            List<ModelInfo> models = iwSvc.GetModels();
 
             Assert.IsNotNull(models, "null result, error happens.");
             Assert.AreEqual("San Francisco", models[0].name);
@@ -60,21 +60,21 @@ namespace InfraworksApiLibTest
         public void GetModelByIdTest()
         {
             InfraworksRestClient iwSvc = new InfraworksRestClient();
-            Model model = iwSvc.GetModelById(1);
+            ModelInfo model = iwSvc.GetModelById(1);
 
             Assert.IsNotNull(model, "null result, error happens.");
             Assert.AreEqual("San Francisco", model.name);
             Assert.AreEqual("http://api.infraworks.autodesk.com/data/models", model.parent);
-            Assert.IsTrue(model.classes.Count > 0);
-            Assert.AreEqual("terrain_textures", model.classes[0].name);
-            Assert.AreEqual("http://api.infraworks.autodesk.com/data/models/1/terrain_textures/terrain_textures",model.classes[0].href);
+            Assert.IsTrue(model.modelClasses.Count > 0);
+            Assert.AreEqual("terrain_textures", model.modelClasses[0].name);
+            Assert.AreEqual("http://api.infraworks.autodesk.com/data/models/1/terrain_textures/terrain_textures",model.modelClasses[0].href);
         }
 
         [TestMethod]
         public void GetClassesInModelTest()
         {
             InfraworksRestClient iwSvc = new InfraworksRestClient();
-            List<Class> classes = iwSvc.GetClassesInModel(1);
+            List<ModelClass> classes = iwSvc.GetClassesInModel(1);
 
             Assert.IsNotNull(classes, "null result, error happens.");
             Assert.IsTrue(classes.Count > 0);
@@ -98,16 +98,45 @@ namespace InfraworksApiLibTest
         }
 
         [TestMethod]
+        public void GetModelItem_Tree_Test()
+        {
+            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
+            Tree tree = iwSvc.GetModelItem<Tree>(1, "trees", "trees", 1);
+            Assert.IsNotNull(tree, "null result, error happens.");
+            Assert.AreEqual("1", tree.id);
+            Assert.AreEqual(AiwGeometryType.Point, tree.geometry.Type);
+            Assert.AreEqual(-122.389268752158, (tree.geometry as AiwPoint).Coordinate.X);
+
+        }
+
+        [TestMethod]
+        public void GetModelItem_Road_Test()
+        {
+            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
+            Road road = iwSvc.GetModelItem<Road>(1, "roads", "roads", 2);
+            Assert.IsNotNull(road, "null result, error happens.");
+            Assert.AreEqual("2", road.id);
+            Assert.AreEqual(AiwGeometryType.LineString, road.geometry.Type);
+            Assert.IsTrue((road.geometry as AiwLineString).Coordinates.Length > 0);
+            Assert.AreEqual("road_2", road.name);
+            Assert.AreEqual(-122.41025187194973, (road.geometry as AiwLineString).Coordinates[0].X, 0.001);
+
+        }
+
+        [TestMethod]
         public void GetModelItem_Terrain_Texture_Test()
         {
-            //InfraworksRestClient iwSvc = new InfraworksRestClient();
-            //Terrain_Texture terrain_Texture = iwSvc.GetModelItem(1, "terrain_textures", "terrain_textures", 1);
+            InfraworksRestClient iwSvc = new InfraworksRestClient();
+            Terrain_Texture terrain_Texture = iwSvc.GetModelItem(1, "terrain_textures", "terrain_textures", 1);
 
-            //Assert.IsNotNull(terrain_Texture, "null result, error happens.");
-            //Assert.AreEqual("1", terrain_Texture.id);
-            //Assert.IsTrue(terrain_Texture.Geometry.Shell.Coordinates.Count > 0);
-            ////Assert.AreEqual("Polygon", typeof(terrain_Texture.Geometry));
-            //Assert.AreEqual(-122.40065974864822, terrain_Texture.Geometry.Shell.Coordinates[0].Longitude);
+            Assert.IsNotNull(terrain_Texture, "null result, error happens.");
+            Assert.AreEqual("1", terrain_Texture.id);
+            Assert.AreEqual(AiwGeometryType.Polygon, terrain_Texture.geometry.Type);
+            Assert.IsTrue((terrain_Texture.geometry as AiwPolygon).LinearRings[0].Coordinates.Length > 0);
+
+            Assert.AreEqual(-122.40065974864822, (terrain_Texture.geometry as AiwPolygon).LinearRings[0].Coordinates[0].X, 0.001 );
 
 
         }
@@ -120,10 +149,17 @@ namespace InfraworksApiLibTest
             Terrain_Surface surface = iwSvc.GetModelItem<Terrain_Surface>(1, "terrain_surfaces", "terrain_surfaces", 1);
             Assert.IsNotNull(surface, "null result, error happens.");
             Assert.AreEqual("1", surface.id);
-            //Assert.IsTrue(surface.geometry.coordinates.Count > 0);
-            //Assert.AreEqual("Polygon", surface.geometry.type);
-            //Assert.AreEqual(-122.39651068043577, surface.geometry.coordinates[0][0][0]);
+            Assert.AreEqual(AiwGeometryType.Polygon, surface.geometry.Type);
+            Assert.IsTrue((surface.geometry as AiwPolygon).LinearRings[0].Coordinates.Length > 0);
+            Assert.AreEqual(-122.39651068043577, (surface.geometry as AiwPolygon).LinearRings[0].Coordinates[0].X, 0.001);
 
+            Assert.AreEqual(AiwGeometryType.NoGeometry, surface.offset.Type);
+
+            Assert.AreEqual(AiwGeometryType.Matrix3d, surface.cell_orientation.Type);
+            Assert.AreEqual(8.429137, (surface.cell_orientation as AiwMatrix3d).Vectors[0].Coordinate.X, 0.001);
+
+            Assert.AreEqual(AiwGeometryType.Vector, surface.cells.Type);
+            Assert.AreEqual(1402, (surface.cells as AiwVector).Coordinate.X, 0.001);
         }
 
         [TestMethod]
@@ -168,33 +204,7 @@ namespace InfraworksApiLibTest
 
         }
 
-        [TestMethod]
-        public void GetModelItem_Tree_Test()
-        {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
 
-            Tree tree = iwSvc.GetModelItem<Tree>(1, "trees", "trees", 1);
-            Assert.IsNotNull(tree, "null result, error happens.");
-            Assert.AreEqual("1", tree.id);
-            Assert.AreEqual(AiwGeometryType.Point,tree.geometry.Type);
-            Assert.AreEqual(-122.389268752158,(tree.geometry as AiwPoint).Coordinate.X);
- 
-        }
-
-        [TestMethod]
-        public void GetModelItem_Road_Test()
-        {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
-
-            Road road = iwSvc.GetModelItem<Road>(1, "roads", "roads", 2);
-            Assert.IsNotNull(road, "null result, error happens.");
-            Assert.AreEqual("2", road.id);
-            Assert.AreEqual(AiwGeometryType.LineString, road.geometry.Type);
-            Assert.IsTrue((road.geometry as AiwLineString).Coordinates.Length > 0);
-            Assert.AreEqual("road_2", road.name);
-            Assert.AreEqual(-122.41025187194973, (road.geometry as AiwLineString).Coordinates[0].X);  
-
-        }
 
     }
 }

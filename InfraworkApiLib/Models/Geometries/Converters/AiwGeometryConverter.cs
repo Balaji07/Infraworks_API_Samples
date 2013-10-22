@@ -28,7 +28,9 @@ namespace InfraworkApiLib.Models.Geometries.Converters
     {
         public override bool CanConvert(Type objectType)
         {
+
             return objectType == typeof(AiwGeometry);
+                
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -60,15 +62,51 @@ namespace InfraworkApiLib.Models.Geometries.Converters
 
                     serializer.Converters.Add(new AiwCoordinateConverter());
                     AiwCoordinate[] coordinates = serializer.Deserialize<AiwCoordinate[]>(reader);
-
                     value = new AiwLineString(coordinates);
 
                     break;
                 case AiwGeometryType.Polygon:
+                    serializer.Converters.Add(new AiwCoordinateConverter());
+                    List<AiwCoordinate[]> linearRingCoordinates = serializer.Deserialize<List<AiwCoordinate[]>>(reader);
+
+                    List<AiwLineString> linearRings = new List<AiwLineString>();
+                    foreach (var item in linearRingCoordinates)
+                    {
+                        AiwLineString loop = new AiwLineString(item);
+                        linearRings.Add(loop);
+
+                    }
+                    value = new AiwPolygon(linearRings);
+                    
                     break;
                 case AiwGeometryType.Vector:
+
+                    serializer.Converters.Add(new AiwCoordinateConverter());
+                    coordinate = serializer.Deserialize<AiwCoordinate>(reader);
+                    
+                    value = new AiwVector(coordinate);
+
                     break;
-                case AiwGeometryType.NonGeometry:
+                case AiwGeometryType.Matrix3d:
+                    serializer.Converters.Add(new AiwCoordinateConverter());
+                    AiwCoordinate[] vectorCoordinates = serializer.Deserialize<AiwCoordinate[]>(reader);
+
+                    List<AiwVector> vectors = new List<AiwVector>();
+                    foreach (var item in vectorCoordinates)
+                    {
+                        AiwVector vector = new AiwVector(item);
+                        vectors.Add(vector);
+
+                    }
+                    value = new AiwMatrix3d(vectors);
+
+                    break;
+                case AiwGeometryType.NoGeometry:
+                    serializer.Converters.Add(new AiwCoordinateConverter());
+                    coordinate = serializer.Deserialize<AiwCoordinate>(reader);
+
+                    value = new AiwNoGeometry();
+
                     break;
                 default:
                     break;

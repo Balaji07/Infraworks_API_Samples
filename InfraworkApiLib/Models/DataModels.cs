@@ -33,20 +33,23 @@ namespace InfraworkApiLib.Models
         public string description { get; set; }
     }
 
-    public class Class
+    
+    public class ModelClass
     {
         public string name { get; set; }
         public string href { get; set; }
         public string type { get; set; }
     }
 
-    public class Model
+    public class ModelInfo
     {
         public string name { get; set; }
         public string id { get; set; }
         public string model_type { get; set; }
         public string parent { get; set; }
-        public List<Class> classes { get; set; }
+        public string href { get; set; }
+        [JsonProperty("classes")]
+        public List<ModelClass> modelClasses { get; set; }
     }
 
     public class Item
@@ -62,45 +65,28 @@ namespace InfraworkApiLib.Models
         public List<Item> items { get; set; }
     }
 
-
-
-
-    public class Offset
-    {
-        public string type { get; set; }
-        public List<object> coordinates { get; set; }
-    }
-
-    public class Cells
-    {
-        public string type { get; set; }
-        public List<int> coordinates { get; set; }
-    }
-
-    public class CellOrientation
-    {
-        public string type { get; set; }
-        public List<List<double>> coordinates { get; set; }
-    }
-
     public class Terrain_Texture
     {
         public string id { get; set; }
-        public object name { get; set; }
-        public object description { get; set; }
-        public object tag { get; set; }
-        public object user_data { get; set; }
-        public object tooltip { get; set; }
-        public object link { get; set; }
-        public object creation_date { get; set; }
-        public object termination_date { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public string tag { get; set; }
+        public string user_data { get; set; }
+        public string tooltip { get; set; }
+        public string link { get; set; }
+        public DateTime? creation_date { get; set; }
+        public DateTime? termination_date { get; set; }
         public string cs_code { get; set; }
         public object lod_level { get; set; }
         [JsonProperty(PropertyName = "geometry", Required = Required.Always)]
-        public object geometry_raw { get; set; }
-        public Offset offset { get; set; }
-        public Cells cells { get; set; }
-        public CellOrientation cell_orientation { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry geometry { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry offset { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry cells { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry cell_orientation { get; set; }
 
        
     }
@@ -110,24 +96,29 @@ namespace InfraworkApiLib.Models
     public class Terrain_Surface
     {
         public string id { get; set; }
-        public object name { get; set; }
-        public object description { get; set; }
-        public object tag { get; set; }
-        public object user_data { get; set; }
-        public object tooltip { get; set; }
-        public object link { get; set; }
-        public object creation_date { get; set; }
-        public object termination_date { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public string tag { get; set; }
+        public string user_data { get; set; }
+        public string tooltip { get; set; }
+        public string link { get; set; }
+        public DateTime? creation_date { get; set; }
+        public DateTime? termination_date { get; set; }
         public string cs_code { get; set; }
-        public object lod_level { get; set; }
+        public string lod_level { get; set; }
         public int surface_type { get; set; }
         public int num_tris { get; set; }
         public double min_z { get; set; }
         public double max_z { get; set; }
-        public object geometry { get; set; }
-        public Offset offset { get; set; }
-        public Cells cells { get; set; }
-        public CellOrientation cell_orientation { get; set; }
+        [JsonProperty(PropertyName = "geometry", Required = Required.Always)]
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry geometry { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry offset { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry cells { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry cell_orientation { get; set; }
     }
 
 
@@ -160,7 +151,9 @@ namespace InfraworkApiLib.Models
         public object instance_scale_variance { get; set; }
         public object instance_spacing { get; set; }
         public object instance_spacing_variance { get; set; }
-        public string geometry { get; set; }
+        [JsonProperty("geometry")]
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry geometry { get; set; }
         public Scale scale { get; set; }
     }
 
@@ -210,7 +203,9 @@ namespace InfraworkApiLib.Models
         public object water_level { get; set; }
         public object buffer_width { get; set; }
         public object bank_width { get; set; }
-        public string geometry { get; set; }
+        [JsonProperty("geometry")]
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry geometry { get; set; }
         public ModelScale model_scale { get; set; }
         public ModelRotate model_rotate { get; set; }
         public ModelTranslate model_translate { get; set; }
@@ -241,7 +236,9 @@ namespace InfraworkApiLib.Models
         public object cost_method { get; set; }
         public object hard_cost { get; set; }
         public object soft_cost { get; set; }
-        public string geometry { get; set; }
+        [JsonProperty("geometry")]
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry geometry { get; set; }
         public ModelScale model_scale { get; set; }
         public ModelRotate model_rotate { get; set; }
         public ModelTranslate model_translate { get; set; }

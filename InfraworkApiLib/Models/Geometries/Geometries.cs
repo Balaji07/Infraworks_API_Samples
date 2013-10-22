@@ -79,7 +79,74 @@ namespace InfraworkApiLib.Models.Geometries
         public AiwCoordinate[] Coordinates { get; internal set; }
     }
 
+    public class AiwPolygon : AiwGeometry
+    {
+        public AiwPolygon(List<AiwLineString> loops)
+        {
+            if (loops == null)
+            {
+                throw new Exception("linestring coordinates for outerloop are expected for a polygon. ");
+            }
 
+
+            this.LinearRings = loops;
+            this.Type = AiwGeometryType.Polygon;
+
+        }
+
+        public List<AiwLineString> LinearRings { get; set; }
+
+
+
+    }
+
+
+
+    public class AiwVector : AiwPoint
+    {
+        public AiwVector(AiwCoordinate coordinate)
+        {
+            if (coordinate == null)
+            {
+                throw new ArgumentNullException("coordinates for vector is null");
+            }
+
+            this.Coordinate = coordinate;
+            this.Type = AiwGeometryType.Vector;
+        }
+
+    }
+
+    public class AiwMatrix3d : AiwGeometry
+    {
+        public AiwMatrix3d(List<AiwVector> vectors)
+        {
+
+            if (vectors == null)
+            {
+                throw new Exception("coordinates for each vector  are expected for a Matrix3d . ");
+            }
+
+
+            this.Vectors = vectors;
+            this.Type = AiwGeometryType.Matrix3d;
+        }
+
+        public List<AiwVector> Vectors { get; set; }
+
+    }
+
+
+    public class AiwNoGeometry : AiwGeometry
+    {
+        public AiwNoGeometry()
+        {
+            this.Type = AiwGeometryType.NoGeometry;
+       
+        }
+
+      
+    }
 
 
 }

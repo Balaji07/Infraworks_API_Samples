@@ -29,6 +29,7 @@ namespace InfraworkApiLib.Models.Geometries
         LineString,
         Polygon,
         Vector,
-        NonGeometry
+        NoGeometry,
+        Matrix3d
     }
 }

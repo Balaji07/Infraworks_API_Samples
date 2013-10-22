@@ -21,6 +21,19 @@ namespace SampleApp
         private void Form1_Load(object sender, EventArgs e)
         {
             bindServices();
+
+            bindModeles();
+        }
+
+        private void bindModeles()
+        {
+            InfraworksRestClient iwSvc = new InfraworksRestClient();
+            List<ModelInfo> allModels = iwSvc.GetModels();
+            if (allModels == null) return;
+
+            cbModels.DataSource = allModels;
+            cbModels.DisplayMember = "name";
+            cbModels.ValueMember = "id";
         }
 
         private void bindServices()
@@ -34,6 +47,22 @@ namespace SampleApp
             cbServices.ValueMember = "href";
 
  
+
+        }
+
+        private void cbModels_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string id = cbModels.SelectedValue.ToString();
+            int modelId;
+            Int32.TryParse(id,out modelId);
+            InfraworksRestClient iwSvc = new InfraworksRestClient();
+            ModelInfo modelInfo = iwSvc.GetModelById(modelId);
+            if (modelInfo == null) return;
+
+            cbModelClasses.DataSource = modelInfo.modelClasses;
+            cbModelClasses.DisplayMember = "name";
+            cbModelClasses.ValueMember = "href";
+            
 
         }
     }

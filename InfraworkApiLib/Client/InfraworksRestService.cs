@@ -70,7 +70,7 @@ namespace InfraworkApiLib.Client
         }
 
 
-        public List<Model> GetModels()
+        public List<ModelInfo> GetModels()
         {
             string resource = "/data/models";
             RestRequest request = new RestRequest(resource, Method.GET);
@@ -83,7 +83,7 @@ namespace InfraworkApiLib.Client
             {
                 string json = response.Content;
 
-                List<Model> models = JsonConvert.DeserializeObject<List<Model>>(json);
+                List<ModelInfo> models = JsonConvert.DeserializeObject<List<ModelInfo>>(json);
                 return models;
 
             }
@@ -93,7 +93,7 @@ namespace InfraworkApiLib.Client
             }
         }
 
-        public Model GetModelById(int modelId)
+        public ModelInfo GetModelById(int modelId)
         {
             string resource = String.Format("/data/models/{0}", modelId);
             RestRequest request = new RestRequest(resource, Method.GET);
@@ -106,7 +106,7 @@ namespace InfraworkApiLib.Client
             {
                 string json = response.Content;
 
-                Model model = JsonConvert.DeserializeObject<Model>(json);
+                ModelInfo model = JsonConvert.DeserializeObject<ModelInfo>(json);
                 return model;
 
             }
@@ -116,12 +116,12 @@ namespace InfraworkApiLib.Client
             }
         }
 
-        public List<Class> GetClassesInModel(int modelId)
+        public List<ModelClass> GetClassesInModel(int modelId)
         {
-            Model model = GetModelById(modelId);
-            List<Class> classes = new List<Class>(); 
+            ModelInfo model = GetModelById(modelId);
+            List<ModelClass> classes = new List<ModelClass>(); 
 
-            foreach (var item in model.classes)
+            foreach (var item in model.modelClasses)
             {
                 classes.Add(item);
             }
@@ -181,13 +181,6 @@ namespace InfraworkApiLib.Client
         public Terrain_Texture GetModelItem(int modelId, string class_type, string collection, int itemId)
         {
             Terrain_Texture item = GetModelItem<Terrain_Texture>(modelId, class_type, collection, itemId);
-
-            ////parse GeoJSON
-            //string geomJson = item.geometry_raw.ToString();
-            //var reader = new GeoJsonReader();
-            //Polygon geom = reader.Read(geomJson) as Polygon;
-
-            //item.Geometry = geom;
 
             return item;
 

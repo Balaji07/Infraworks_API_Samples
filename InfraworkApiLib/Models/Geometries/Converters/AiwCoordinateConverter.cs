@@ -125,15 +125,19 @@ namespace InfraworkApiLib.Models.Geometries.Converters
 
             AiwCoordinate c = new AiwCoordinate();
             reader.Read();
-            Debug.Assert(reader.TokenType == JsonToken.Float);
-            c.X = (Double)reader.Value;
-            reader.Read();
-            Debug.Assert(reader.TokenType == JsonToken.Float);
-            c.Y = (Double)reader.Value;
-            reader.Read();
-            if (reader.TokenType == JsonToken.Float)
+            if (reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer)
             {
-                c.Z = (Double)reader.Value;
+                c.X = Double.Parse(reader.Value.ToString());
+                reader.Read();
+            }
+            if (reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer)
+            {
+                c.Y = Double.Parse(reader.Value.ToString());
+                reader.Read();
+            }
+            if (reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer)
+            {
+                c.Z = Double.Parse(reader.Value.ToString());
                 reader.Read();
             }
             Debug.Assert(reader.TokenType == JsonToken.EndArray);
