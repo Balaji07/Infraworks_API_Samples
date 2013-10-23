@@ -414,4 +414,42 @@ namespace InfraworkApiLib.Models
         public AiwGeometry model_transform { get; set; }
     }
 
+
+    public class CustomBuilding
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public object description { get; set; }
+        public object tag { get; set; }
+        public object user_data { get; set; }
+        public object tooltip { get; set; }
+        public object link { get; set; }
+        public object creation_date { get; set; }
+        public object termination_date { get; set; }
+        public object elevation_offset { get; set; }
+        public object generalization { get; set; }
+        public object tessellation { get; set; }
+        public int model_visible { get; set; }
+        public int model_split { get; set; }
+        public object spacing { get; set; }
+        public object spacing_variance { get; set; }
+        public object building_complex_id { get; set; }
+        public object base_color { get; set; }
+        public double roof_height { get; set; }
+        public object roof_height_absolute { get; set; }
+        public object roof_slope { get; set; }
+        public object roof_material { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry geometry { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry model_scale { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry model_rotate { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry model_translate { get; set; }
+        [JsonConverter(typeof(AiwGeometryConverter))]
+        public AiwGeometry model_transform { get; set; }
+    }
+
+
 }

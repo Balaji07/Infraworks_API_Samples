@@ -257,5 +257,21 @@ namespace InfraworksApiLibTest
 
         }
 
+
+        [TestMethod]
+        public void GetModelItem_Building_Test()
+        {
+            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
+            CustomBuilding customBuilding = iwSvc.GetModelItem<CustomBuilding>(1, "buildings", "custom_buildings", 1);
+            Assert.IsNotNull(customBuilding, "null result, error happens.");
+            Assert.AreEqual("1", customBuilding.id);
+            Assert.AreEqual(AiwGeometryType.Polygon, customBuilding.geometry.Type);
+            Assert.IsTrue((customBuilding.geometry as AiwPolygon).LinearRings[0].Coordinates.Length > 0);
+            Assert.AreEqual(-122.39168922320701, (customBuilding.geometry as AiwPolygon).LinearRings[0].Coordinates[0].X, 0.001);
+
+          
+        }
+
     }
 }
