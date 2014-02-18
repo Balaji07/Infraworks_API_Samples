@@ -7,8 +7,8 @@
     <ProjectGuid>{B849F521-42CE-4127-89DC-EDC587CC2C70}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InfraworkApiLib</RootNamespace>
-    <AssemblyName>InfraworkApiLib</AssemblyName>
+    <RootNamespace>Autodesk.Adn.InfrworksService</RootNamespace>
+    <AssemblyName>Autodesk.Adn.InfrworksService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,8 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\ConfidentialConsts.cs" />
-    <Compile Include="Client\InfraworksRestService.cs" />
+    <Compile Include="Service\InfraworksRestService.cs" />
     <Compile Include="Models\DataModels.cs" />
     <Compile Include="Models\Geometries\AiwCoordinate.cs" />
     <Compile Include="Models\Geometries\Converters\AiwCoordinateConverter.cs" />
@@ -57,6 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Autodesk.Adn.OAuthService\Autodesk.Adn.OAuthentication.csproj">
+      <Project>{c2edfd19-8922-4c1b-ae0f-8ff7a7e130a7}</Project>
+      <Name>Autodesk.Adn.OAuthentication</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

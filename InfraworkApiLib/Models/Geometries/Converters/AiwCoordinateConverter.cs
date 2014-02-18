@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Newtonsoft.Json;
 
-namespace InfraworkApiLib.Models.Geometries.Converters
+namespace Autodesk.Adn.InfrworksService.Models.Geometries.Converters
 {
     public class AiwCoordinateConverter : JsonConverter
     {

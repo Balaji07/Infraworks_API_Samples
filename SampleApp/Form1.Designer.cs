@@ -36,33 +36,34 @@
             // cbServices
             // 
             this.cbServices.FormattingEnabled = true;
-            this.cbServices.Location = new System.Drawing.Point(12, 24);
+            this.cbServices.Location = new System.Drawing.Point(12, 22);
             this.cbServices.Name = "cbServices";
-            this.cbServices.Size = new System.Drawing.Size(283, 24);
+            this.cbServices.Size = new System.Drawing.Size(283, 23);
             this.cbServices.TabIndex = 0;
             // 
             // cbModels
             // 
             this.cbModels.FormattingEnabled = true;
-            this.cbModels.Location = new System.Drawing.Point(12, 54);
+            this.cbModels.Location = new System.Drawing.Point(12, 51);
             this.cbModels.Name = "cbModels";
-            this.cbModels.Size = new System.Drawing.Size(283, 24);
+            this.cbModels.Size = new System.Drawing.Size(283, 23);
             this.cbModels.TabIndex = 1;
             this.cbModels.SelectedIndexChanged += new System.EventHandler(this.cbModels_SelectedIndexChanged);
             // 
             // cbModelClasses
             // 
             this.cbModelClasses.FormattingEnabled = true;
-            this.cbModelClasses.Location = new System.Drawing.Point(12, 84);
+            this.cbModelClasses.Location = new System.Drawing.Point(12, 79);
             this.cbModelClasses.Name = "cbModelClasses";
-            this.cbModelClasses.Size = new System.Drawing.Size(283, 24);
+            this.cbModelClasses.Size = new System.Drawing.Size(283, 23);
             this.cbModelClasses.TabIndex = 2;
+            this.cbModelClasses.SelectedIndexChanged += new System.EventHandler(this.cbModelClasses_SelectedIndexChanged);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 375);
+            this.ClientSize = new System.Drawing.Size(504, 352);
             this.Controls.Add(this.cbModelClasses);
             this.Controls.Add(this.cbModels);
             this.Controls.Add(this.cbServices);

@@ -16,17 +16,42 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
 
-using InfraworkApiLib.Client;
-using InfraworkApiLib.Models;
-using InfraworkApiLib.Models.Geometries;
+
+/////////////////////////////////////////////////////////////////////////////////
+// With OAuth integration and server data changes, 
+// These test case does not work any more 
+// Keep it here just for your reference about the usage of InfraworksRestService
+//
+// For example, to get the road model information: 
+//
+//    Road road = iwSvc.GetModelItem<Road>(1, "roads", "roads", 2);
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+using Autodesk.Adn.InfrworksService.Service;
+using Autodesk.Adn.InfrworksService.Models;
+using Autodesk.Adn.InfrworksService.Models.Geometries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using Autodesk.Adn.OAuthentication;
 
 namespace InfraworksApiLibTest
 {
     [TestClass]
     public class InfraworksRestClientUnitTests
     {
+
+        // Hard coded consumer and secret keys and base URL.
+        // In real world Apps, these values need to secured.
+        // One approach is to encrypt and/or obfuscate these values
+        private const string m_ConsumerKey = "<place holder>";
+        private const string m_ConsumerSecret = "<place holder>";
+        private const string m_OAuthBaseURL = "URL for Autodesk OAuth";
+
+
+        InfraworksRestService iwSvc;
+
         [TestInitialize]
         public void Init()
         {
@@ -37,7 +62,6 @@ namespace InfraworksApiLibTest
         public void GetServicesTest()
         {
 
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
             List<InfraworksService> allServices = iwSvc.GetServices();
 
             Assert.IsNotNull(allServices,"null result, error happens.");
@@ -48,7 +72,18 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelsTest()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+            OAuthService oauthSvc = new OAuthService(m_ConsumerKey, m_ConsumerSecret, m_OAuthBaseURL);
+            bool authenticated = oauthSvc.StartOAuth();
+            if (!authenticated)
+            {
+                //MessageBox.Show("authentication failed.");
+                return;
+            }
+            else
+            {
+                iwSvc = new InfraworksRestService(oauthSvc);
+            }
+
             List<ModelInfo> models = iwSvc.GetModels();
 
             Assert.IsNotNull(models, "null result, error happens.");
@@ -58,7 +93,6 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelByIdTest()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
             ModelInfo model = iwSvc.GetModelById(1);
 
             Assert.IsNotNull(model, "null result, error happens.");
@@ -72,7 +106,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetClassesInModelTest()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
             List<ModelClass> classes = iwSvc.GetClassesInModel(1);
 
             Assert.IsNotNull(classes, "null result, error happens.");
@@ -86,7 +120,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetItemsByClassTest()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
             Collection terrain_TextureCollection = iwSvc.GetItemsByClass(1, "terrain_textures");
 
             Assert.IsNotNull(terrain_TextureCollection, "null result, error happens.");
@@ -99,7 +133,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Tree_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             Tree tree = iwSvc.GetModelItem<Tree>(1, "trees", "trees", 1);
             Assert.IsNotNull(tree, "null result, error happens.");
@@ -112,7 +146,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Road_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             Road road = iwSvc.GetModelItem<Road>(1, "roads", "roads", 2);
             Assert.IsNotNull(road, "null result, error happens.");
@@ -127,7 +161,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Terrain_Texture_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
             Terrain_Texture terrain_Texture = iwSvc.GetModelItem<Terrain_Texture>(1, "terrain_textures", "terrain_textures", 1);
 
             Assert.IsNotNull(terrain_Texture, "null result, error happens.");
@@ -143,7 +177,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Terrain_Surface_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             Terrain_Surface surface = iwSvc.GetModelItem<Terrain_Surface>(1, "terrain_surfaces", "terrain_surfaces", 1);
             Assert.IsNotNull(surface, "null result, error happens.");
@@ -164,7 +198,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Markup_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             Markup markup = iwSvc.GetModelItem<Markup>(1, "markup", "markup", 1);
             Assert.IsNotNull(markup, "null result, error happens.");
@@ -182,7 +216,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Water_Area_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             Water_Area water_area = iwSvc.GetModelItem<Water_Area>(1, "water_areas", "water_areas", 1);
             Assert.IsNotNull(water_area, "null result, error happens.");
@@ -197,7 +231,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Coverage_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             Coverage coverage = iwSvc.GetModelItem<Coverage>(1, "coverages", "coverages", 7);
             Assert.IsNotNull(coverage, "null result, error happens.");
@@ -213,7 +247,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Pipeline_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             PipeLine pipeline = iwSvc.GetModelItem<PipeLine>(1, "pipelines", "pipelines", 1);
             Assert.IsNotNull(pipeline, "null result, error happens.");
@@ -230,7 +264,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Railway_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             Railway railway = iwSvc.GetModelItem<Railway>(1, "railways", "railways", 16);
             Assert.IsNotNull(railway, "null result, error happens.");
@@ -247,7 +281,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_PipeConnector_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             PipeConnector pipeConnector = iwSvc.GetModelItem<PipeConnector>(1, "pipe_connectors", "pipe_connectors", 1);
             Assert.IsNotNull(pipeConnector, "null result, error happens.");
@@ -261,7 +295,7 @@ namespace InfraworksApiLibTest
         [TestMethod]
         public void GetModelItem_Building_Test()
         {
-            InfraworksRestClient iwSvc = new InfraworksRestClient();
+
 
             CustomBuilding customBuilding = iwSvc.GetModelItem<CustomBuilding>(1, "buildings", "custom_buildings", 1);
             Assert.IsNotNull(customBuilding, "null result, error happens.");

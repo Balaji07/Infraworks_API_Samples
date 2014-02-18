@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace InfraworkApiLib.Models.Geometries
+namespace Autodesk.Adn.InfrworksService.Models.Geometries
 {
     public enum AiwGeometryType
     {

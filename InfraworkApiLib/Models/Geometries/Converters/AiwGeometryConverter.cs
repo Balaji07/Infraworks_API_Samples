@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace InfraworkApiLib.Models.Geometries.Converters
+namespace Autodesk.Adn.InfrworksService.Models.Geometries.Converters
 {
     public class AiwGeometryConverter : JsonConverter
     {

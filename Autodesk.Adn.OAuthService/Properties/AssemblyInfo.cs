@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Autodesk.Adn.InfrworksService")]
+[assembly: AssemblyTitle("Autodesk.Adn.OAuthService")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Autodesk.Adn.InfrworksService")]
+[assembly: AssemblyProduct("Autodesk.Adn.OAuthService")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("aa65870f-0452-4822-99e4-3a7f7614a5eb")]
+[assembly: Guid("a38e29c6-ab99-4c68-8357-8ab0dda37bde")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -58,9 +58,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfraworkApiLib\InfraworkApiLib.csproj">
+    <ProjectReference Include="..\Autodesk.Adn.OAuthService\Autodesk.Adn.OAuthentication.csproj">
+      <Project>{c2edfd19-8922-4c1b-ae0f-8ff7a7e130a7}</Project>
+      <Name>Autodesk.Adn.OAuthentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfraworkApiLib\Autodesk.Adn.InfrworksService.csproj">
       <Project>{b849f521-42ce-4127-89dc-edc587cc2c70}</Project>
-      <Name>InfraworkApiLib</Name>
+      <Name>Autodesk.Adn.InfrworksService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

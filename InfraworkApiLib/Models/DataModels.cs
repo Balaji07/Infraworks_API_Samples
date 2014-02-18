@@ -16,13 +16,13 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
 
-using InfraworkApiLib.Models.Geometries;
-using InfraworkApiLib.Models.Geometries.Converters;
+using Autodesk.Adn.InfrworksService.Models.Geometries;
+using Autodesk.Adn.InfrworksService.Models.Geometries.Converters;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace InfraworkApiLib.Models
+namespace Autodesk.Adn.InfrworksService.Models
 {
     public class InfraworksService
     {

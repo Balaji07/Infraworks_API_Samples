@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace InfraworkApiLib.Models.Geometries
+namespace Autodesk.Adn.InfrworksService.Models.Geometries
 {
     
     public class AiwCoordinate

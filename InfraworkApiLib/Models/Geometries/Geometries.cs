@@ -21,7 +21,7 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 
-namespace InfraworkApiLib.Models.Geometries
+namespace Autodesk.Adn.InfrworksService.Models.Geometries
 {
     public class AiwGeometry
     {

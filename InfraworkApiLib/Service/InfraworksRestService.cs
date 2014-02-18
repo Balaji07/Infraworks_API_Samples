@@ -16,26 +16,38 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
 
-using InfraworkApiLib.Models;
+using Autodesk.Adn.InfrworksService.Models;
 using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
+using Autodesk.Adn.OAuthentication;
 
-namespace InfraworkApiLib.Client
+namespace Autodesk.Adn.InfrworksService.Service
 {
-    public class InfraworksRestClient
+    public class InfraworksRestService
     {
-        
+        //
+        const string iwRestSvcUrl = "https://api.infraworks.autodesk.com";
 
         private RestClient m_client;
+        private OAuthService m_OAuthService;
 
-
-        public InfraworksRestClient()
+        public InfraworksRestService(OAuthService oauthSvc)
         {
+            this.m_OAuthService = oauthSvc;
+
             if (m_client == null)
             {
-                m_client = new RestClient(ConfidentialConsts.baseUrl);
+                m_client = new RestClient(iwRestSvcUrl);
+
+
+                OAuth1Authenticator authenticator = OAuth1Authenticator.ForProtectedResource(
+                    m_OAuthService.ConsumerKey, m_OAuthService.ConsumerSecret,
+                    m_OAuthService.AccessToken, m_OAuthService.AccessTokenSecret);
+
+                m_client.Authenticator = authenticator;
             }
             
         }
